@@ -1,0 +1,18 @@
+---
+apiVersion: gateway.mulesoft.com/v1alpha1
+kind: Extension
+metadata:
+  labels:
+    title: Basic Auth to Client ID Transformer
+    description: Transform Client ID and Secret passed as a Basic Authentication into dedicated Anypoint Headers. 
+    category: Custom
+spec:
+  extends:
+    - name: extension-definition
+      namespace: default
+  properties:
+    stringProperty:
+      type: string
+      default: some value
+  required:
+    - stringProperty

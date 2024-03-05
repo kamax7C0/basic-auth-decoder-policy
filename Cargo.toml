@@ -1,0 +1,30 @@
+[package]
+name = "basic_auth_to_client_headers"
+version = "1.0.0"
+rust-version = "1.74.0"
+edition = "2018"
+
+[package.metadata.anypoint]
+group_id = "84016144-765e-46e6-a89b-37ae8d419126"
+definition_asset_id = "basic-auth-to-client-headers"
+implementation_asset_id = "basic-auth-to-client-headers-flex"
+
+[dependencies]
+pdk = { version = "1.0.0", registry = "anypoint" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
+anyhow = "1.0"
+http-auth-basic = "0.3.3"
+
+[dev-dependencies]
+pdk-test = { version = "1.0.0", registry = "anypoint" }
+httpmock = "0.6"
+reqwest = "0.11"
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+lto = true
+opt-level = 'z'
+strip = "debuginfo"
