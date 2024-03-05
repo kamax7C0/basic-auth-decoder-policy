@@ -1,9 +1,35 @@
-# "Basic Auth to Client ID Transformer" Policy
+# "Basic Authentication Decoder" Policy
 
 This policy was created with the Flex Gateway Policy Development Kit (PDK). To find the complete PDK documentation, see [PDK Overview](https://docs.mulesoft.com/pdk/latest/policies-pdk-overview) on the Mulesoft documentation site.
 
 ## Description
-This is a small "helper" policy for Flex Gateway, that will decode and copy the values of the Client ID and Client Secret credentials, sent to an API as a Basic Authentication, into the client_id and client_secret HTTP headers.  
+This is a small "helper" policy for Flex Gateway, that will decode and copy the values of the Client ID and Client Secret credentials, sent to an API as a Basic Authentication, into the client_id and client_secret HTTP headers. 
+
+## Description
+
+The **Basic Authentication Decoder Policy** for Anypoint Flex Gateway is designed to facilitate API security and integration by automatically decoding Basic Authentication credentials. This policy extracts the `Client ID` and `Client Secret` from the Basic Authentication header, then repurposes these credentials into separate `client_id` and `client_secret` HTTP headers for further processing. This allows downstream policies and backend services to easily access and validate these credentials without needing to parse the Basic Authentication header themselves.
+
+### How It Works
+
+The Basic Authentication Decoder Policy intercepts incoming API requests that contain the Basic Authentication header. It decodes the Base64-encoded credentials found within this header and then splits the decoded string to extract the `Client ID` and `Client Secret`. These credentials are then individually injected into the `client_id` and `client_secret` HTTP headers of the request, which continues on to the backend service for processing. If the Basic Authentication header is not present, the policy delegates the processing to the downstream.
+
+### Use Cases
+
+- **API Security:** Enhances security by allowing Flex Gateway SLA-Based policies to directly validate `Client ID` and `Client Secret` without parsing the Basic Authentication header. The OTB SLA-Based policies do not support parsing the Basic Auth OTB (at least for Flex Gateway version 1.6.2). 
+
+### Configuration Steps
+
+1. **Build & Add Policy to your Organization:** Follow the [MuleSoft Guide](https://docs.mulesoft.com/pdk/latest/policies-pdk-prerequisites) on how to prepare a development environment and publish the policy to you organizations Anypoint Exchange.
+2. **Enable Policy:** Navigate to your Flex Gateway's API Policy Management section and add the Basic Authentication Decoder Policy. Make sure the policy is sorted before the SLA-Based one.
+3. **Configure Policy:** There's no additional configuration needed.
+
+### Examples
+
+#### Example 1: Decoding Basic Authentication
+
+- **Given:** An incoming API request with the Basic Authentication header `Authorization: Basic dGVzdDp0ZXN0MTIz`.
+- **Action:** The policy decodes `dGVzdDp0ZXN0MTIz` to `test:test123`, where `test` is the `Client ID` and `test123` is the `Client Secret`.
+- **Result:** The request is modified to include `client_id: test` and `client_secret: test123` headers.
 
 ## Make command reference
 This project has a Makefile that includes different goals that assist the developer during the policy development lifecycle.
